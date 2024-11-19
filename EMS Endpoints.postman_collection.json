@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "2e5eb192-86f8-4b41-88ff-85d0412868d7",
+		"name": "EMS Endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39454308"
+	},
+	"item": [
+		{
+			"name": "AddCompanies",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"comapnies_name\": \"Example Corp\",\r\n  \"meter_type\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/addcompanies?comapnies_name=Paolo&meter_type=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"addcompanies"
+					],
+					"query": [
+						{
+							"key": "comapnies_name",
+							"value": "Paolo"
+						},
+						{
+							"key": "meter_type",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/companies/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/companies/"
+			},
+			"response": []
+		},
+		{
+			"name": "Set Compnay & Its Meters",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"companyName\": \"Cardinal\",\r\n  \"meterName\": \"Meter 10\",\r\n  \"meterNumericId\": 10\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api//companies/1/meters"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Meters By Company ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api//companies/1/meters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"",
+						"companies",
+						"1",
+						"meters"
+					],
+					"query": [
+						{
+							"key": "i",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Total Consumption by Company",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/companies/1/monthly-usage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"companies",
+						"1",
+						"monthly-usage"
+					],
+					"query": [
+						{
+							"key": "i",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
