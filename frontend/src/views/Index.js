@@ -21,7 +21,7 @@ import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar , Pie} from "react-chartjs-2";
 // reactstrap components
 import {
   Button,
@@ -73,11 +73,11 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
+                      Power
                     </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
+                    <h2 className="text-white mb-0">Monthly Usage</h2>
                   </div>
-                  <div className="col">
+                  {/* <div className="col">
                     <Nav className="justify-content-end" pills>
                       <NavItem>
                         <NavLink
@@ -105,7 +105,7 @@ const Index = (props) => {
                         </NavLink>
                       </NavItem>
                     </Nav>
-                  </div>
+                  </div> */}
                 </Row>
               </CardHeader>
               <CardBody>
@@ -126,16 +126,16 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
+                      Consumption
                     </h6>
-                    <h2 className="mb-0">Total orders</h2>
+                    <h2 className="mb-0">VRF/ NON - VRF</h2>
                   </div>
                 </Row>
               </CardHeader>
               <CardBody>
                 {/* Chart */}
                 <div className="chart">
-                  <Bar
+                  <Pie
                     data={chartExample2.data}
                     options={chartExample2.options}
                   />
@@ -150,41 +150,37 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
+                    <h3 className="mb-0">Usage Report - 2024</h3>
                   </div>
                   <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
+                 
                   </div>
                 </Row>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
-                    <th scope="col">Bounce rate</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">Usage</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">Usage</th>
+                    <th scope="col">Change</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">/argon/</th>
+                    <td>January</td>
                     <td>4,569</td>
-                    <td>340</td>
+                    <td>Feburary</td>
+                    <td>4,569</td>
                     <td>
                       <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/index.html</th>
+                    <td>March</td>
                     <td>3,985</td>
+                    <td>April</td>
                     <td>319</td>
                     <td>
                       <i className="fas fa-arrow-down text-warning mr-3" />{" "}
@@ -192,8 +188,9 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/charts.html</th>
+                  <td>May</td>
                     <td>3,513</td>
+                    <td>June</td>
                     <td>294</td>
                     <td>
                       <i className="fas fa-arrow-down text-warning mr-3" />{" "}
@@ -201,16 +198,28 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/tables.html</th>
+                    <td>July</td>
                     <td>2,050</td>
+                    <td>August</td>
                     <td>147</td>
                     <td>
                       <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/profile.html</th>
+                    <td>September</td>
                     <td>1,795</td>
+                    <td>October</td>
+                    <td>190</td>
+                    <td>
+                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
+                      46,53%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>November</td>
+                    <td>1,795</td>
+                    <td>December</td>
                     <td>190</td>
                     <td>
                       <i className="fas fa-arrow-down text-danger mr-3" />{" "}
@@ -226,37 +235,31 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
+                    <h3 className="mb-0">Distribution Monthly</h3>
                   </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
+                  
                 </Row>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Referral</th>
-                    <th scope="col">Visitors</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">VRF</th>
+                    <th scope="col">Non VRF</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Facebook</th>
+                    <th scope="row">January</th>
                     <td>1,480</td>
+                    <td>2,560</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
+                    
+                        <div style={{ width: "60%" }}>
                           <Progress
+                            width="50%"
                             max="100"
                             value="60"
                             barClassName="bg-gradient-danger"
@@ -266,11 +269,12 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Facebook</th>
+                    <th scope="row">Feburary</th>
                     <td>5,480</td>
+                    <td>4,560</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">70%</span>
+                      
                         <div>
                           <Progress
                             max="100"
@@ -282,11 +286,12 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Google</th>
+                    <th scope="row">March</th>
                     <td>4,807</td>
+                    <td>3,678</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">80%</span>
+                        
                         <div>
                           <Progress max="100" value="80" />
                         </div>
@@ -294,11 +299,12 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Instagram</th>
+                    <th scope="row">April</th>
                     <td>3,678</td>
+                    <td>1,478</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">75%</span>
+                        
                         <div>
                           <Progress
                             max="100"
@@ -310,16 +316,34 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">twitter</th>
+                    <th scope="row">May</th>
                     <td>2,645</td>
+                    <td>2,050</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">30%</span>
+                       
                         <div>
                           <Progress
                             max="100"
                             value="30"
                             barClassName="bg-gradient-warning"
+                          />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">June</th>
+                    <td>1,765</td>
+                    <td>1,230</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        
+                        <div>
+                          <Progress
+                            max="100"
+                            value="50"
+                            barClassName="bg-gradient-danger"
                           />
                         </div>
                       </div>

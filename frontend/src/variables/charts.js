@@ -187,6 +187,7 @@ function chartOptions() {
   var options = {
     defaults: {
       global: {
+        
         responsive: true,
         maintainAspectRatio: false,
         defaultColor: mode === "dark" ? colors.gray[700] : colors.gray[600],
@@ -231,7 +232,7 @@ function chartOptions() {
           intersect: false,
         },
       },
-      doughnut: {
+      bar: {
         cutoutPercentage: 83,
         legendCallback: function (chart) {
           var data = chart.data;
@@ -319,7 +320,7 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "$" + value + "k";
+                return "" + value + " kW";
               }
             },
           },
@@ -337,7 +338,7 @@ let chartExample1 = {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += "W " + yLabel + "";
           return content;
         },
       },
@@ -348,9 +349,10 @@ let chartExample1 = {
       labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       datasets: [
         {
-          label: "Performance",
+          label: "Usage",
           data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
         },
+      
       ],
     };
   },
@@ -370,6 +372,12 @@ let chartExample1 = {
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
 let chartExample2 = {
   options: {
+    color: ["#f4f5f7", "#f5365c"],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
     scales: {
       yAxes: [
         {
@@ -400,12 +408,16 @@ let chartExample2 = {
     },
   },
   data: {
-    labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["VRF", "Non _VRF"],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)'
+    ],
     datasets: [
       {
-        label: "Sales",
-        data: [25, 20, 30, 22, 17, 29],
-        maxBarThickness: 10,
+        label: "Power Distribution",
+        data: [75, 20],
+        // maxBarThickness: 10,
       },
     ],
   },

@@ -34,7 +34,7 @@ const Login = () => {
                   href="https://www.creative-tim.com?ref=adr-auth-footer"
                   target="_blank"
                 >
-                  Creative Tim
+                  Code Chrone Team
                 </a>
               </div>
             </Col>
@@ -42,15 +42,15 @@ const Login = () => {
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    href="https://www.codeChrone.com?ref=adr-auth-footer"
                     target="_blank"
                   >
-                    Creative Tim
+                    Code Chrone
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                    href="https://www.codeChrone.com?"
                     target="_blank"
                   >
                     About Us
@@ -58,7 +58,7 @@ const Login = () => {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="http://blog.creative-tim.com?ref=adr-auth-footer"
+                    href="https://www.codeChrone.com?"
                     target="_blank"
                   >
                     Blog
