@@ -17,6 +17,7 @@
 */
 
 // reactstrap components
+import ActivePower from "components/ActivePowerWSS/ActivePower";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 const Header = () => {
@@ -27,6 +28,7 @@ const Header = () => {
           <div className="header-body">
             {/* Card stats */}
             <Row>
+              <ActivePower companyId={1} />
               <Col lg="6" xl="4">
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
