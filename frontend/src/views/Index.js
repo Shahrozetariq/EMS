@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState } from "react";
+import {useEffect,  useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -38,6 +38,10 @@ import {
   Col,
 } from "reactstrap";
 
+import moment from "moment";
+
+import axios from 'axios'
+
 // core components
 import {
   chartOptions,
@@ -45,12 +49,73 @@ import {
   chartExample1,
   chartExample2,
 } from "variables/charts.js";
+ 
+
 
 import Header from "components/Headers/Header.js";
+
+import MonthlyUsageChart from "./MonthlyUsageChart";
+
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [usageData, setUsageData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  useEffect(() => {
+    // Fetch data from the API
+    axios
+      .get("http://localhost:8081/api/companies/1/monthly-usage")
+      .then((response) => {
+        console.log("this is data 1122: ", response)
+        const sortedData = response.data.sort((a, b) => a.month - b.month); // Ensure correct month order
+        setUsageData(sortedData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  const generateTableRows = () => {
+    const rows = [];
+    for (let i = 0; i < usageData.length; i += 2) {
+      const current = usageData[i];
+      const next = usageData[i + 1] || {}; // Handle the case where there's no next month
+
+      // Calculate percentage change
+      const change = next.total_consumption && current.total_consumption
+        ? (((next.total_consumption - current.total_consumption) / current.total_consumption) * 100).toFixed(2)
+        : 0;
+
+      rows.push(
+        <tr key={i}>
+          <td>{monthNames[current.month - 1]}</td>
+          <td>{parseFloat(current.total_consumption || 0).toLocaleString()}</td>
+          <td>{monthNames[next.month - 1]}</td>
+          <td>{parseFloat(next.total_consumption || 0).toLocaleString()}</td>
+          <td>
+            {change > 0 ? (
+              <i className="fas fa-arrow-up text-success mr-3" />
+            ) : change < 0 ? (
+              <i className="fas fa-arrow-down text-danger mr-3" />
+            ) : (
+              <i className="fas fa-minus text-warning mr-3" />
+            )}
+            {Math.abs(change)}%
+          </td>
+        </tr>
+      );
+    }
+    return rows;
+  };
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -75,7 +140,7 @@ const Index = (props) => {
                     <h6 className="text-uppercase text-light ls-1 mb-1">
                       Power
                     </h6>
-                    <h2 className="text-white mb-0">Monthly Usage</h2>
+                    <h2 className="text-white mb-0">Monthly Usage - {moment().format('YYYY')}</h2>
                   </div>
                   {/* <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -111,11 +176,12 @@ const Index = (props) => {
               <CardBody>
                 {/* Chart */}
                 <div className="chart">
-                  <Line
+                  {/* <Line
                     data={chartExample1[chartExample1Data]}
                     options={chartExample1.options}
                     getDatasetAtEvent={(e) => console.log(e)}
-                  />
+                  /> */}
+                  <MonthlyUsageChart apiData={usageData} />
                 </div>
               </CardBody>
             </Card>
@@ -150,7 +216,7 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Usage Report - 2024</h3>
+                    <h3 className="mb-0">Usage Report - {moment().format('YYYY')}</h3>
                   </div>
                   <div className="col text-right">
                  
@@ -167,7 +233,7 @@ const Index = (props) => {
                     <th scope="col">Change</th>
                   </tr>
                 </thead>
-                <tbody>
+                {/* <tbody>
                   <tr>
                     <td>January</td>
                     <td>4,569</td>
@@ -226,7 +292,8 @@ const Index = (props) => {
                       46,53%
                     </td>
                   </tr>
-                </tbody>
+                </tbody> */}
+                <tbody>{generateTableRows()}</tbody>
               </Table>
             </Card>
           </Col>
