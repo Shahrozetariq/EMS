@@ -28,7 +28,7 @@ const Header = () => {
           <div className="header-body">
             {/* Card stats */}
             <Row>
-              <ActivePower companyId={1} />
+              {/* <ActivePower companyId={1} /> */}
               <Col lg="6" xl="4">
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
@@ -43,19 +43,19 @@ const Header = () => {
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap ">Line 1 </span>
                           <span className="text-warning mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap">Line 2 </span>
                           <span className="text-info mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>{" "}
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap">Line 3</span>
                           <span className="text-success mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>{" "}
                         </p>
 
@@ -89,19 +89,19 @@ const Header = () => {
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap ">Non VRF</span>
                           <span className="text-warning mr-2 text-nowrap">
-                          {" - "} 3859
+                            {" - "} 3859
                           </span>
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap">VRF </span>
                           <span className="text-info mr-2 text-nowrap">
-                          {" - "} 0
+                            {" - "} 0
                           </span>
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap"></span>
                           <span className="text-success mr-2 text-nowrap">
-                          {"  "} 
+                            {"  "}
                           </span>
                         </p>
 
@@ -134,19 +134,19 @@ const Header = () => {
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap ">Non VRF</span>
                           <span className="text-warning mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap">Line 2 </span>
                           <span className="text-info mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>
                         </p>
                         <p className="mt-3 mb-0 text-muted text-sm">
                           <span className="text-nowrap">Line 3</span>
                           <span className="text-success mr-2 text-nowrap">
-                          {" - "} 3859W
+                            {" - "} 3859W
                           </span>
                         </p>
 
@@ -166,7 +166,7 @@ const Header = () => {
                   </CardBody>
                 </Card>
               </Col>
-              
+
             </Row>
           </div>
         </Container>
