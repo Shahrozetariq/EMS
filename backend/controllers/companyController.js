@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
+const { getMonthlyUsageByCompany } = require('./monthlyUsage');
 const db = require('../db'); // Import your database connection
 
 // Configure Multer for file uploads
@@ -16,6 +17,48 @@ router.get('/companies', async (req, res) => {
         res.status(500).json({ message: 'Error fetching companies' });
     }
 });
+
+// Get a specific company by ID
+router.get('/companies/:companyId', async (req, res) => {
+    const { companyId } = req.params;
+    try {
+        const [company] = await db.query('SELECT * FROM companies_list WHERE id_comp = ?', [companyId]);
+        if (company.length > 0) {
+            res.json(company[0]);
+        } else {
+            res.status(404).json({ message: 'Company not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching company' });
+    }
+});
+
+// Update an existing company by ID
+router.put('/companies/:companyId', async (req, res) => {
+    const { companyId } = req.params;
+    const { comapnies_name, meter_type } = req.body;
+    try {
+        await db.query('UPDATE companies_list SET comapnies_name = ?, meter_type = ? WHERE id_comp = ?', [comapnies_name, meter_type, companyId]);
+        res.json({ message: 'Company updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating company' });
+    }
+});
+
+// Delete a company by ID
+router.delete('/companies/:companyId', async (req, res) => {
+    const { companyId } = req.params;
+    try {
+        await db.query('DELETE FROM companies_list WHERE id_comp = ?', [companyId]);
+        res.json({ message: 'Company deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting company' });
+    }
+});
+
 
 // Fetch all meters
 router.get('/meters', async (req, res) => {
@@ -45,6 +88,40 @@ router.post('/addcompanies', upload.single('logo'), async (req, res) => {
     }
 });
 
+router.get('/companies/:companyId/meters', async (req, res) => {
+    const { companyId } = req.params;
+
+    try {
+        // Query to get company details
+        const [companyResult] = await db.query(
+            'SELECT * FROM companies_list WHERE id_comp = ?',
+            [companyId]
+        );
+
+        // Check if the company exists
+        if (companyResult.length === 0) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+
+        const company = companyResult[0];
+
+        // Query to get associated meters for the company
+        const [metersResult] = await db.query(
+            'SELECT * FROM companies_meter WHERE id_comp = ?',
+            [companyId]
+        );
+
+        // Response with company details and its meters
+        res.json({
+            company,
+            meters: metersResult
+        });
+    } catch (error) {
+        console.error("Error fetching company and meters:", error.message);
+        res.status(500).json({ message: 'Error fetching company and meters', error: error.message });
+    }
+});
+
 // Assign meter to a company
 router.post('/companies/:companyId/meters', async (req, res) => {
     const { companyId } = req.params;
@@ -61,5 +138,8 @@ router.post('/companies/:companyId/meters', async (req, res) => {
         res.status(500).json({ message: 'Error assigning meter' });
     }
 });
+
+// get monthly usag of company
+router.get('/companies/:companyId/monthly-usage', getMonthlyUsageByCompany);
 
 module.exports = router;
