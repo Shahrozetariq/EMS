@@ -140,7 +140,11 @@ const Index = (props) => {
                     <h6 className="text-uppercase text-light ls-1 mb-1">
                       Power
                     </h6>
+<<<<<<< HEAD
                     <h2 className="text-white mb-0">Monthly Usage - {moment().format('YYYY')}</h2>
+=======
+                    <h2 className="text-white mb-0">Monthly Usage</h2>
+>>>>>>> 3f47dae (first)
                   </div>
                   {/* <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -216,7 +220,11 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
+<<<<<<< HEAD
                     <h3 className="mb-0">Usage Report - {moment().format('YYYY')}</h3>
+=======
+                    <h3 className="mb-0">Usage Report - 2024</h3>
+>>>>>>> 3f47dae (first)
                   </div>
                   <div className="col text-right">
                  
@@ -276,6 +284,19 @@ const Index = (props) => {
                     <td>September</td>
                     <td>1,795</td>
                     <td>October</td>
+<<<<<<< HEAD
+=======
+                    <td>190</td>
+                    <td>
+                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
+                      46,53%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>November</td>
+                    <td>1,795</td>
+                    <td>December</td>
+>>>>>>> 3f47dae (first)
                     <td>190</td>
                     <td>
                       <i className="fas fa-arrow-down text-danger mr-3" />{" "}
