@@ -1,0 +1,6 @@
+backend/.env
+backend/.gitignore
+backend/db.js
+backend/server.test.js
+backend/yarn.lock
+backend/uploads/08729a728dd826054c579732710885d3
