@@ -56,6 +56,59 @@ const getMonthlyUsageByCompany = async (req, res) => {
     }
 };
 
+const getMonthlyBill = async (req, res) => {
+    const { month, meterType } = req.body;
+
+    if (!month || !meterType) {
+        return res.status(400).json({ message: 'Month and meterType are required' });
+    }
+
+    // Hardcoded rate for the given meter type
+    const ratePerUnit = 5.50; // Example rate, adjust as needed
+
+    try {
+        const query = `
+        SELECT
+            cl.comapnies_name AS company_name,
+            cl.logo,
+            cm.meter_name,
+            SUM(mpc.total_power_consumed) AS total_power_consumed
+        FROM
+            defaultdb.companies_list AS cl
+        INNER JOIN
+            defaultdb.companies_meter AS cm ON cl.id_comp = cm.id_comp
+        INNER JOIN
+            defaultdb.monthly_power_consumption AS mpc ON cm.meter_numeric_id = mpc.numeric_id
+        WHERE
+            cm.meter_type = ?
+            AND DATE_FORMAT(mpc.month_year, '%Y-%m') = ?
+        GROUP BY
+            cl.id_comp, cm.meter_name
+        
+        `;
+
+        const results = await db.query(query, [meterType, month]);
+        console.log("bills", results);
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No data found for the provided criteria' });
+        }
+
+        const response = results[0].map((row) => ({
+            companyName: row.company_name,
+            logo: row.logo,
+            meterName: row.meter_name,
+            totalPowerConsumed: parseFloat(row.total_power_consumed), // Ensure numeric conversion
+            totalBill: parseFloat(row.total_power_consumed) * ratePerUnit, // Ensure numeric conversion
+        }));
+        console.log("response:", response)
+        res.status(200).json(response);
+    } catch (error) {
+        console.error("Error fetching company bill:", error);
+        res.status(500).json({ message: 'Error fetching company bill' });
+    }
+};
+
 module.exports = {
-    getMonthlyUsageByCompany
+    getMonthlyUsageByCompany,
+    getMonthlyBill
 };

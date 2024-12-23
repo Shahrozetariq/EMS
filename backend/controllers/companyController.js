@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const { getMonthlyUsageByCompany } = require('./monthlyUsage');
+const { getMonthlyUsageByCompany, getMonthlyBill } = require('./monthlyUsage');
 const db = require('../db'); // Import your database connection
 
 // Configure Multer for file uploads
@@ -123,15 +123,38 @@ router.get('/companies/:companyId/meters', async (req, res) => {
 });
 
 // Assign meter to a company
+// router.post('/companies/:companyId/meters', async (req, res) => {
+//     const { companyId } = req.params;
+//     const { meterName, meterType } = req.body;
+
+//     try {
+//         await db.query(
+//             'INSERT INTO companies_meter (id_comp, meter_name, meter_type) VALUES (?, ?, ?)',
+//             [companyId, meterName, meterType]
+//         );
+//         res.status(201).json({ message: 'Meter assigned successfully' });
+//     } catch (error) {
+//         console.error("Error assigning meter:", error);
+//         res.status(500).json({ message: 'Error assigning meter' });
+//     }
+// });
 router.post('/companies/:companyId/meters', async (req, res) => {
     const { companyId } = req.params;
-    const { meterName, meterType } = req.body;
+    const { meterName, meterNumericId, meterType, companyName } = req.body;
 
     try {
+        // Ensure all required fields are provided
+        if (!meterName || !meterNumericId || !meterType || !companyName) {
+            return res.status(400).json({ message: 'All fields are required: meterName, meterNumericId, meterType, companyName' });
+        }
+
+        // Insert the meter into the companies_meter table
         await db.query(
-            'INSERT INTO companies_meter (id_comp, meter_name, meter_type) VALUES (?, ?, ?)',
-            [companyId, meterName, meterType]
+            `INSERT INTO companies_meter (id_comp, company_name, meter_name, meter_numeric_id, meter_type)
+             VALUES (?, ?, ?, ?, ?)`,
+            [companyId, companyName, meterName, meterNumericId, meterType]
         );
+
         res.status(201).json({ message: 'Meter assigned successfully' });
     } catch (error) {
         console.error("Error assigning meter:", error);
@@ -141,5 +164,6 @@ router.post('/companies/:companyId/meters', async (req, res) => {
 
 // get monthly usag of company
 router.get('/companies/:companyId/monthly-usage', getMonthlyUsageByCompany);
+router.post('/companies/company-bill', getMonthlyBill);
 
 module.exports = router;

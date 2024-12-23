@@ -15,41 +15,35 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import {useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 // node.js library that concatenates classes (strings)
-import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar , Pie} from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 // reactstrap components
 import {
-  Button,
   Card,
-  CardHeader,
   CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
+  CardHeader,
   Col,
+  Container,
+  Progress,
+  Row,
+  Table
 } from "reactstrap";
 
 import moment from "moment";
 
-import axios from 'axios'
+import axios from 'axios';
 
 // core components
 import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
   chartExample2,
+  chartOptions,
+  parseOptions
 } from "variables/charts.js";
- 
+
 
 
 import Header from "components/Headers/Header.js";
@@ -69,7 +63,7 @@ const Index = (props) => {
   ];
 
   useEffect(() => {
-    // Fetch data from the API
+    // Fetch data from the API 
     axios
       .get("http://localhost:8081/api/companies/1/monthly-usage")
       .then((response) => {
@@ -140,11 +134,7 @@ const Index = (props) => {
                     <h6 className="text-uppercase text-light ls-1 mb-1">
                       Power
                     </h6>
-<<<<<<< HEAD
                     <h2 className="text-white mb-0">Monthly Usage - {moment().format('YYYY')}</h2>
-=======
-                    <h2 className="text-white mb-0">Monthly Usage</h2>
->>>>>>> 3f47dae (first)
                   </div>
                   {/* <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -220,14 +210,10 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-<<<<<<< HEAD
-                    <h3 className="mb-0">Usage Report - {moment().format('YYYY')}</h3>
-=======
                     <h3 className="mb-0">Usage Report - 2024</h3>
->>>>>>> 3f47dae (first)
                   </div>
                   <div className="col text-right">
-                 
+
                   </div>
                 </Row>
               </CardHeader>
@@ -325,7 +311,7 @@ const Index = (props) => {
                   <div className="col">
                     <h3 className="mb-0">Distribution Monthly</h3>
                   </div>
-                  
+
                 </Row>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
@@ -344,7 +330,7 @@ const Index = (props) => {
                     <td>2,560</td>
                     <td>
                       <div className="d-flex align-items-center">
-                    
+
                         <div style={{ width: "60%" }}>
                           <Progress
                             width="50%"
@@ -362,7 +348,7 @@ const Index = (props) => {
                     <td>4,560</td>
                     <td>
                       <div className="d-flex align-items-center">
-                      
+
                         <div>
                           <Progress
                             max="100"
@@ -379,7 +365,7 @@ const Index = (props) => {
                     <td>3,678</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        
+
                         <div>
                           <Progress max="100" value="80" />
                         </div>
@@ -392,7 +378,7 @@ const Index = (props) => {
                     <td>1,478</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        
+
                         <div>
                           <Progress
                             max="100"
@@ -409,7 +395,7 @@ const Index = (props) => {
                     <td>2,050</td>
                     <td>
                       <div className="d-flex align-items-center">
-                       
+
                         <div>
                           <Progress
                             max="100"
@@ -426,7 +412,7 @@ const Index = (props) => {
                     <td>1,230</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        
+
                         <div>
                           <Progress
                             max="100"

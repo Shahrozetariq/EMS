@@ -68,11 +68,13 @@ class CompanyManagement extends Component {
 
     handleAssignMeter = async (e) => {
         e.preventDefault();
-        const { selectedCompany, selectedMeter, meterType } = this.state;
+        const { selectedCompany, selectedCompanyName, selectedMeter, meterType, selectedMeterId } = this.state;
 
         try {
             await axios.post(`http://localhost:8081/api/companies/${selectedCompany}/meters`, {
-                meterName: selectedMeter,
+                companyName: selectedCompanyName.comapnies_name,
+                meterNumericId: selectedMeterId.numeric_id,
+                meterName: selectedMeterId.name,
                 meterType: meterType === "VRF" ? 1 : 2,
             });
             alert("Meter assigned successfully!");
@@ -134,9 +136,13 @@ class CompanyManagement extends Component {
                                             <Input
                                                 type="select"
                                                 value={this.state.selectedCompany}
-                                                onChange={(e) =>
-                                                    this.setState({ selectedCompany: e.target.value })
-                                                }
+                                                onChange={(e) => {
+                                                    console.log(e.target)
+                                                    this.setState({
+                                                        selectedCompany: e.target.value,
+                                                        selectedCompanyName: this.state.companies.find((company) => company.id_comp === parseInt(e.target.value))
+                                                    })
+                                                }}
                                             >
                                                 <option value="">Select a company</option>
                                                 {this.state.companies.map((company) => (
@@ -151,14 +157,15 @@ class CompanyManagement extends Component {
                                             <Input
                                                 type="select"
                                                 value={this.state.selectedMeter}
-                                                onChange={(e) =>
-                                                    this.setState({ selectedMeter: e.target.value })
-                                                }
+                                                onChange={(e) => {
+                                                    console.log(e.target.value)
+                                                    this.setState({ selectedMeter: e.target.value, selectedMeterId: this.state.meters.find((meter) => meter.idmeters === parseInt(e.target.value)) })
+                                                }}
                                             >
                                                 <option value="">Select a meter</option>
                                                 {this.state.meters.map((meter) => (
-                                                    <option key={meter.id} value={meter.meter_name}>
-                                                        {meter.meter_name}
+                                                    <option key={meter.idmeters} value={meter.idmeters}>
+                                                        {meter.name}
                                                     </option>
                                                 ))}
                                             </Input>
@@ -185,7 +192,7 @@ class CompanyManagement extends Component {
                             </Card>
                         </Col>
                     </Row>
-                </Container>
+                </Container >
             </>
         );
     }

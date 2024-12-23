@@ -23,6 +23,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import CompanyManagement from "views/examples/CompanyManagement.js";
+import CompanyBill from "views/examples/CompanyBill.js";
 
 var routes = [
   {
@@ -57,7 +58,7 @@ var routes = [
     path: "/tables",
     name: "Tables",
     icon: "ni ni-bullet-list-67 text-red",
-    component: <Tables />,
+    component: <CompanyBill />,
     layout: "/admin",
   },
   {
