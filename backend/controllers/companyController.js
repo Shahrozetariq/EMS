@@ -1,7 +1,9 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const { getMonthlyUsageByCompany, getMonthlyBill } = require('./monthlyUsage');
+const { getMonthlyUsageByCompany, getMonthlyBill, getLastSixMonthsUsage } = require('./monthlyUsage');
+const { getCompaniesWithMeters, deleteMeters } = require('./companiesAndMeters');
+const { getliveDatabyMeter } = require('./LiveDataPhase');
 const db = require('../db'); // Import your database connection
 
 // Configure Multer for file uploads
@@ -162,8 +164,15 @@ router.post('/companies/:companyId/meters', async (req, res) => {
     }
 });
 
+
+router.get('/companies/liveDataByPhase/:companyId/:meterType', getliveDatabyMeter);
 // get monthly usag of company
 router.get('/companies/:companyId/monthly-usage', getMonthlyUsageByCompany);
 router.post('/companies/company-bill', getMonthlyBill);
+router.get('/companies-with-meters', getCompaniesWithMeters);
+router.delete('/delete-meters/:meterId', deleteMeters);
+router.get('/companiesSixMonthly/:companyId', getLastSixMonthsUsage);
+// get live data by meter phase
+
 
 module.exports = router;

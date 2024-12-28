@@ -24,6 +24,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import CompanyManagement from "views/examples/CompanyManagement.js";
 import CompanyBill from "views/examples/CompanyBill.js";
+import CompaniesWithMeters from "views/examples/companiesWithMeters.js";
 
 var routes = [
   {
@@ -33,13 +34,13 @@ var routes = [
     component: <Index />,
     layout: "/admin",
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: <Icons />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "ni ni-planet text-blue",
+  //   component: <Icons />,
+  //   layout: "/admin",
+  // },
   {
     path: "/Meters",
     name: "Assign Meters",
@@ -47,13 +48,13 @@ var routes = [
     component: <CompanyManagement />,
     layout: "/admin",
   },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: <Profile />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/user-profile",
+  //   name: "User Profile",
+  //   icon: "ni ni-single-02 text-yellow",
+  //   component: <Profile />,
+  //   layout: "/admin",
+  // },
   {
     path: "/tables",
     name: "Tables",
@@ -62,18 +63,25 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
-    component: <Login />,
-    layout: "/auth",
+    path: "/companiesWithMeters",
+    name: "Companies and Meters",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: <CompaniesWithMeters />,
+    layout: "/admin",
   },
-  {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: <Register />,
-    layout: "/auth",
-  },
+  // {
+  //   path: "/login",
+  //   name: "Login",
+  //   icon: "ni ni-key-25 text-info",
+  //   component: <Login />,
+  //   layout: "/auth",
+  // },
+  // {
+  //   path: "/register",
+  //   name: "Register",
+  //   icon: "ni ni-circle-08 text-pink",
+  //   component: <Register />,
+  //   layout: "/auth",
+  // },
 ];
 export default routes;

@@ -17,18 +17,42 @@
 */
 
 // reactstrap components
-import ActivePower from "components/ActivePowerWSS/ActivePower";
-import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import ActivePowerCard from "components/ActivePowerWSS/ActivePowerCard";
+import { Card, CardBody, CardTitle, Container, Row, Col, Alert, Badge } from "reactstrap";
+
 
 const Header = () => {
+
+  const [totalVRF, setTotalVRF] = useState(0);
+  const [totalNonVRF, setTotalNonVRF] = useState(0);
+
+
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
         <Container fluid>
           <div className="header-body">
+            <Row xs={2}>
+              <Col>
+                <Alert color="primary" className="text-center">
+                  VRF  <Badge color="secondary" className="text-dark">{totalVRF.toFixed(2)}</Badge>
+                </Alert></Col>
+              <Col>
+                <Alert className="text-center" >
+                  Non-VRF  <Badge color="secondary" className="text-dark">{totalNonVRF.toFixed(2)}</Badge>
+                </Alert></Col>
+            </Row>
+            <Row xs={6}>
+
+              <ActivePowerCard companyId={1} meterType={1} setTotalPhases={setTotalVRF} />
+              <ActivePowerCard companyId={1} meterType={2} setTotalPhases={setTotalNonVRF} />
+            </Row>
+
             {/* Card stats */}
-            <Row>
-              {/* <ActivePower companyId={1} /> */}
+            {/* <Row>
+
               <Col lg="6" xl="4">
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
@@ -167,7 +191,7 @@ const Header = () => {
                 </Card>
               </Col>
 
-            </Row>
+            </Row> */}
           </div>
         </Container>
       </div>

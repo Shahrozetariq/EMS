@@ -108,7 +108,73 @@ const getMonthlyBill = async (req, res) => {
     }
 };
 
+// Controller to get the last six months of VRF and non-VRF usage for a company
+const getLastSixMonthsUsage = async (req, res) => {
+    const { companyId } = req.params;
+
+    try {
+        // Validate if the company exists
+        const [companyResult] = await db.query(
+            'SELECT * FROM companies_list WHERE id_comp = ?',
+            [companyId]
+        );
+
+        if (companyResult.length === 0) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+
+        // Query to get the last six months' usage grouped by meter type (1 = VRF, 2 = Non-VRF)
+        const query = `
+            SELECT 
+                MONTH(mpc.month_year) AS month,
+                YEAR(mpc.month_year) AS year,
+                cm.meter_type,
+                IFNULL(SUM(mpc.total_power_consumed), 0) AS total_consumption
+            FROM monthly_power_consumption AS mpc
+            INNER JOIN companies_meter AS cm ON mpc.numeric_id = cm.meter_numeric_id
+            WHERE cm.id_comp = ?
+            AND mpc.month_year >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY year, month, cm.meter_type
+            ORDER BY year DESC, month DESC;
+        `;
+
+        const [usageResult] = await db.query(query, [companyId]);
+
+        // Fill missing months with zero consumption for both VRF and non-VRF
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth() + 1;
+
+        const filledUsage = [];
+
+        for (let i = 0; i < 6; i++) {
+            const month = currentMonth - i > 0 ? currentMonth - i : currentMonth - i + 12;
+            const year = currentMonth - i > 0 ? currentYear : currentYear - 1;
+
+            const vrfData = usageResult.find(
+                (row) => row.month === month && row.year === year && row.meter_type === 1
+            );
+            const nonVrfData = usageResult.find(
+                (row) => row.month === month && row.year === year && row.meter_type === 2
+            );
+
+            filledUsage.push({
+                month,
+                year,
+                vrfConsumption: vrfData ? vrfData.total_consumption : 0,
+                nonVrfConsumption: nonVrfData ? nonVrfData.total_consumption : 0,
+            });
+        }
+
+        res.status(200).json(filledUsage);
+    } catch (error) {
+        console.error('Error fetching last six months usage:', error.message);
+        res.status(500).json({ message: 'Error fetching last six months usage', error: error.message });
+    }
+};
+
+
 module.exports = {
     getMonthlyUsageByCompany,
-    getMonthlyBill
+    getMonthlyBill,
+    getLastSixMonthsUsage
 };

@@ -29,4 +29,7 @@ router.get('/companies/:companyId/emsdata', async (req, res) => {
     }
 });
 
+
+
+
 module.exports = router;

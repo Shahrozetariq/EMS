@@ -30,7 +30,8 @@ import {
   Container,
   Progress,
   Row,
-  Table
+  Table,
+  Badge
 } from "reactstrap";
 
 import moment from "moment";
@@ -50,12 +51,16 @@ import Header from "components/Headers/Header.js";
 
 import MonthlyUsageChart from "./MonthlyUsageChart";
 
+import ConsumptionPieChart from "./examples/pieChart"
+
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
   const [usageData, setUsageData] = useState([]);
+  const [usageDataDist, setUsageDataDist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingDist, setLoadingDist] = useState(true);
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -76,7 +81,24 @@ const Index = (props) => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
+
+    getVRFvsNonVRFData();
   }, []);
+
+  const getVRFvsNonVRFData = () => {
+    axios
+      .get("http://localhost:8081/api/companiesSixMonthly/1")
+      .then((response) => {
+        console.log("this is data 1122: ", response)
+        const distributionData = response.data.sort((a, b) => a.month - b.month); // Ensure correct month order
+        setUsageDataDist(distributionData);
+        setLoadingDist(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoadingDist(false);
+      });
+  };
 
   const generateTableRows = () => {
     const rows = [];
@@ -120,6 +142,15 @@ const Index = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  //convert the data to the month name
+  const getMonthName = (monthNumber) => {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+    return date.toLocaleString("default", { month: "long" });
+  };
+
+
   return (
     <>
       <Header />
@@ -186,7 +217,9 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Consumption
+                      Consumption <Badge color="primary">
+                        last 6 months
+                      </Badge>
                     </h6>
                     <h2 className="mb-0">VRF/ NON - VRF</h2>
                   </div>
@@ -195,17 +228,14 @@ const Index = (props) => {
               <CardBody>
                 {/* Chart */}
                 <div className="chart">
-                  <Pie
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
+                  <ConsumptionPieChart data={usageDataDist} />
                 </div>
               </CardBody>
             </Card>
           </Col>
         </Row>
         <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
+          <Col className="mb-5 mb-xl-0" xl="6">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
@@ -270,19 +300,6 @@ const Index = (props) => {
                     <td>September</td>
                     <td>1,795</td>
                     <td>October</td>
-<<<<<<< HEAD
-=======
-                    <td>190</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>November</td>
-                    <td>1,795</td>
-                    <td>December</td>
->>>>>>> 3f47dae (first)
                     <td>190</td>
                     <td>
                       <i className="fas fa-arrow-down text-danger mr-3" />{" "}
@@ -304,17 +321,17 @@ const Index = (props) => {
               </Table>
             </Card>
           </Col>
-          <Col xl="4">
+          <Col xl="6">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Distribution Monthly</h3>
+                    <h3 className="mb-0">Distribution Monthly </h3>
                   </div>
 
                 </Row>
               </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
+              {/* <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Month</th>
@@ -423,6 +440,77 @@ const Index = (props) => {
                       </div>
                     </td>
                   </tr>
+                </tbody>
+              </Table> */}
+              <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Month</th>
+                    {/* <th scope="col">Year</th> */}
+                    <th scope="col">VRF</th>
+                    <th scope="col">Non-VRF</th>
+                    <th scope="col">Ratio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usageDataDist.map((item, index) => {
+                    const vrfValue = parseFloat(item.vrfConsumption);
+                    const nonVrfValue = parseFloat(item.nonVrfConsumption);
+
+                    const total = vrfValue + nonVrfValue;
+                    const vrfPercentage = total > 0 ? (vrfValue / total) * 100 : 0;
+                    const nonVrfPercentage = total > 0 ? (nonVrfValue / total) * 100 : 0;
+
+                    return (
+                      <tr key={index}>
+                        <th scope="row">{getMonthName(item.month)}</th>
+                        {/* <td>{item.year}</td> */}
+                        <td>{vrfValue.toFixed(2)}</td>
+                        <td>{nonVrfValue.toFixed(2)}</td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            {/* <div style={{ width: "80%", display: "flex" }}> */}
+                            <div>
+                              <Progress
+                                className="my-2"
+                                multi
+                              >
+                                <Progress
+                                  bar
+                                  value={vrfPercentage}
+                                >
+                                  {/* {vrfPercentage}% */}
+                                </Progress>
+                                <Progress
+                                  bar
+                                  color="success"
+                                  value={nonVrfPercentage}
+                                >
+                                  {/* {nonVrfPercentage} */}
+                                </Progress>
+
+                              </Progress>
+                              {/* <Progress max="100" className="progress">
+                                
+                                <div
+                                  style={{ width: `${vrfPercentage}` }}
+                                  className="progress-bar bg-gradient-danger"
+                                />
+                                
+                                <div
+                                  style={{ width: `${nonVrfPercentage}` }}
+                                  className="progress-bar bg-gradient-info"
+                                />
+                              </Progress> */}
+                            </div>
+                            {/* <span className="ml-3">
+                              VRF: {vrfPercentage.toFixed(0)}% / Non-VRF: {nonVrfPercentage.toFixed(0)}%
+                            </span> */}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
             </Card>
