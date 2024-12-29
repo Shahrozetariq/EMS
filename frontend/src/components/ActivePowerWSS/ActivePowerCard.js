@@ -12,7 +12,7 @@ export const ActivePowerCard = (props) => {
         fetchEmsData();
 
         // Establish WebSocket connection
-        const ws = new WebSocket(process.env.REACT_APP_WS_ADDRESS);
+        const ws = new WebSocket("https://ems-1-8a8k.onrender.com");
         ws.onmessage = (event) => {
             try {
                 const newData = JSON.parse(event.data);
@@ -32,6 +32,9 @@ export const ActivePowerCard = (props) => {
         };
     }, []);
 
+    useEffect(() => {
+        props.setTotalPhases(totalPhases.phaseA + totalPhases.phaseB + totalPhases.phaseC);
+    }, [totalPhases, props]);
 
     const fetchEmsData = async () => {
         try {
@@ -40,7 +43,7 @@ export const ActivePowerCard = (props) => {
                 .then((data) => {
                     if (data?.data && Array.isArray(data.data)) {
                         console.log("EMS data fetched:", data.data.length);
-                        maxPower = (data.data.length) * 300
+                        maxPower = data.data.length * 300;
                         aggregatePhases(data.data);
                     } else {
                         console.error("API did not return expected format:", data);
@@ -52,8 +55,9 @@ export const ActivePowerCard = (props) => {
         } catch (error) {
             console.error("Error fetching EMS data:", error);
         }
-    }
-    // Function to aggregate phase values
+    };
+
+
     const aggregatePhases = (meters) => {
         const aggregated = meters.reduce(
             (totals, meter) => {
@@ -66,10 +70,6 @@ export const ActivePowerCard = (props) => {
         );
         setTotalPhases(aggregated);
     };
-
-    props.setTotalPhases(totalPhases.phaseA + totalPhases.phaseB + totalPhases.phaseC);
-
-
 
     return (
         // <Card >
