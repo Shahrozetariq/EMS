@@ -70,7 +70,7 @@ const Index = (props) => {
   useEffect(() => {
     // Fetch data from the API 
     axios
-      .get("http://localhost:8081/api/companies/1/monthly-usage")
+      .get(process.env.REACT_APP_API_ADDRESS + "companies/1/monthly-usage")
       .then((response) => {
         console.log("this is data 1122: ", response)
         const sortedData = response.data.sort((a, b) => a.month - b.month); // Ensure correct month order
@@ -87,7 +87,7 @@ const Index = (props) => {
 
   const getVRFvsNonVRFData = () => {
     axios
-      .get("http://localhost:8081/api/companiesSixMonthly/1")
+      .get(process.env.REACT_APP_API_ADDRESS + "companiesSixMonthly/1")
       .then((response) => {
         console.log("this is data 1122: ", response)
         const distributionData = response.data.sort((a, b) => a.month - b.month); // Ensure correct month order

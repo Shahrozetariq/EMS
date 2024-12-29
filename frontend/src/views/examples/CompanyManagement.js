@@ -35,7 +35,7 @@ class CompanyManagement extends Component {
 
     fetchCompanies = async () => {
         try {
-            const response = await axios.get("http://localhost:8081/api/companies");
+            const response = await axios.get(process.env.REACT_APP_API_ADDRESS + "companies");
             this.setState({ companies: response.data });
         } catch (error) {
             console.error("Error fetching companies:", error);
@@ -44,7 +44,7 @@ class CompanyManagement extends Component {
 
     fetchMeters = async () => {
         try {
-            const response = await axios.get("http://localhost:8081/api//meters"); // Adjust endpoint if needed
+            const response = await axios.get(process.env.REACT_APP_API_ADDRESS + "/meters"); // Adjust endpoint if needed
             this.setState({ meters: response.data });
         } catch (error) {
             console.error("Error fetching meters:", error);
@@ -58,7 +58,7 @@ class CompanyManagement extends Component {
         if (this.state.logo) formData.append("logo", this.state.logo);
 
         try {
-            await axios.post("http://localhost:8081/api/addcompanies", formData);
+            await axios.post(process.env.REACT_APP_API_ADDRESS + "addcompanies", formData);
             this.fetchCompanies();
             this.setState({ companyName: "", logo: null });
         } catch (error) {

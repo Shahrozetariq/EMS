@@ -12,7 +12,7 @@ export const ActivePowerCard = (props) => {
         fetchEmsData();
 
         // Establish WebSocket connection
-        const ws = new WebSocket("ws://localhost:8081");
+        const ws = new WebSocket(process.env.REACT_APP_WS_ADDRESS);
         ws.onmessage = (event) => {
             try {
                 const newData = JSON.parse(event.data);
@@ -35,7 +35,7 @@ export const ActivePowerCard = (props) => {
 
     const fetchEmsData = async () => {
         try {
-            fetch("http://localhost:8081/api/companies/liveDataByPhase/" + props.companyId + "/" + props.meterType)
+            fetch(process.env.REACT_APP_API_ADDRESS + "companies/liveDataByPhase/" + props.companyId + "/" + props.meterType)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data?.data && Array.isArray(data.data)) {

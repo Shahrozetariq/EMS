@@ -8,7 +8,7 @@ const ActivePower = ({ companyId }) => {
     // Function to fetch initial EMS data
     const fetchEmsData = async () => {
         try {
-            const response = await fetch(`http://localhost:8081/api/companies/${companyId}`);
+            const response = await fetch(process.env.API_ADDRESS + 'companies/${companyId}`);
             const data = await response.json();
             setEmsData(data);
         } catch (error) {

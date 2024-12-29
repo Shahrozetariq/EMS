@@ -23,7 +23,7 @@ const CompaniesWithMeters = () => {
 
     const fetchCompaniesWithMeters = async () => {
         try {
-            const response = await axios.get("http://localhost:8081/api/companies-with-meters");
+            const response = await axios.get(process.env.REACT_APP_API_ADDRESS + "companies-with-meters");
             setCompanies(response.data);
         } catch (error) {
             console.error("Error fetching companies with meters:", error);
