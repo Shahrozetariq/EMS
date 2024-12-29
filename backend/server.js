@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const companyRoutes = require('./controllers/companyController'); 
+const companyRoutes = require('./controllers/companyController');
 const activePower = require('./controllers/liveEmsDataController')
 const cors = require("cors");
 const WebSocket = require('ws'); // Import ws for WebSocket support
@@ -9,15 +9,20 @@ const WebSocket = require('ws'); // Import ws for WebSocket support
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors());
+const allowedOrigins = ["http://localhost:3000", "https://ecsdelta.netlify.app"];
 
-// Configure specific origins (recommended for production)
 app.use(
-  cors({
-    origin: "http://localhost:3000", // Allow requests from your frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    credentials: true, // If sending cookies or authentication headers
-  })
+    cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
 );
 
 // Middleware
@@ -25,7 +30,7 @@ app.use(bodyParser.json());
 
 // Use company routes (no change)
 app.use('/api', companyRoutes);
-app.use('/live',activePower)
+app.use('/live', activePower)
 
 // Start HTTP server
 const server = app.listen(PORT, () => {
@@ -38,7 +43,7 @@ const wss = new WebSocket.Server({ noServer: true });
 // Handle WebSocket connections
 wss.on('connection', (ws) => {
     console.log('New WebSocket connection established');
-    
+
     // Handle incoming messages
     ws.on('message', (message) => {
         console.log('Received message:', message);
