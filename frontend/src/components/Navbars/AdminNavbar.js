@@ -34,7 +34,56 @@ import {
   Media,
 } from "reactstrap";
 
+import axios from 'axios';
+
+import { useEffect, useState } from "react";
+
+
+
 const AdminNavbar = (props) => {
+
+  const [companyID, setCompanyID] = useState(1);
+  const [compnayList, setCompanyList] = useState([]);
+  const [companyName, setCompanyName] = useState("")
+
+
+   useEffect(() => {
+      // Fetch data from the API 
+      getCompanyList();
+
+   });
+
+  const getCompanyList = () => {
+    axios
+      .get(process.env.REACT_APP_API_ADDRESS + "companies")
+      .then((response) => {
+        // console.log("this is data 1122: ", response)
+        // const sortedData = response.data.sort((a, b) => a.month - b.month); // Ensure correct month order
+        getCompanyListById(response.data);
+        setCompanyList(response.data);
+        
+        // setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        // setLoading(false);
+      });
+
+  }
+
+  const getCompanyListById = (data) => {
+    const company = data.find((company) => company.id_comp === companyID);
+
+    console.log(data,"Company Name",company, companyID)
+    setCompanyName(company ? company.comapnies_name : "Company not found");
+  }
+
+  const handleChange = (event) => { 
+    
+    setCompanyID(parseInt(event.target.value));
+    getCompanyList(compnayList);
+    // Update the state with selected company id
+  };
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -59,7 +108,7 @@ const AdminNavbar = (props) => {
           </Form> */}
           <Nav className="align-items-center d-none d-md-flex" navbar>
             {/* //User Profile Dropdown */}
-            {/* <UncontrolledDropdown nav>
+            <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
@@ -70,12 +119,26 @@ const AdminNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                    {companyName}
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
+                
+                  <label htmlFor="company-select" className="noti-title">Select a Company: </label>
+                  <select className="dropdown-menu-arrow" id="company-select" onChange={handleChange} value={companyID}>
+                    <option  value="">-- Select a Company --</option>
+                    {compnayList.map((company) => (
+                      <option className="ni ni-single-02" key={company.id_comp} value={company.id_comp}>
+                        {company.comapnies_name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {/* Display selected company ID for testing */}
+                  {companyID && <p>Selected Company ID: {companyID}</p>}
+                
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
@@ -101,7 +164,7 @@ const AdminNavbar = (props) => {
                   <span>Logout</span>
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown> */}
+            </UncontrolledDropdown>
           </Nav>
         </Container>
       </Navbar>
